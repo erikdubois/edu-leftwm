@@ -199,6 +199,12 @@ version = "2.3.2"
 leftwm_versions = "*"
 current = false
 
+[[repos.themes]]
+name = "edu-db-nemesis"
+version = "2.3.2"
+leftwm_versions = "*"
+current = true
+
 [[repos]]
 url = "https://raw.githubusercontent.com/arcolinux/arcolinux-leftwm-themes/master/known.toml"
 name = "arcolinux"
@@ -346,7 +352,7 @@ repository = "https://github.com/arcolinux/arcolinux-leftwm-theme-db-nemesis/"
 commit = "*"
 version = "2.3.2"
 leftwm_versions = "*"
-current = true
+current = false
 
 [[repos]]
 url = "https://raw.githubusercontent.com/arcolinux/arcolinux-leftwm-themes-community/main/known.toml"
