@@ -39,6 +39,7 @@ rm -rf /tmp/input
 
 directories=(
 arcolinux-leftwm
+arcolinux-leftwm-theme-db-nemesis
 )
 
 count=0
