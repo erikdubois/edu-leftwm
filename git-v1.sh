@@ -39,7 +39,6 @@ rm -rf /tmp/input
 
 directories=(
 arcolinux-leftwm
-arcolinux-leftwm-theme-db-nemesis
 )
 
 count=0
@@ -66,6 +65,34 @@ for name in "${directories[@]}"; do
 	echo "#################################################"
 	tput sgr0;
 done
+
+directories=(
+arcolinux-leftwm-theme-db-nemesis
+)
+
+count=0
+
+for name in "${directories[@]}"; do
+	count=$[count+1]
+	tput setaf 1;echo "$count ": Github " $name ";tput sgr0;
+	
+	git clone https://github.com/arcolinux/$name --depth=1  /tmp/input
+
+	rm -rf /tmp/input/.git
+	rm /tmp/input/README.md
+
+	mkdir -p root/etc/skel/.config/leftwm/themes/db-nemesis
+	cp -r /tmp/input/* root/etc/skel/.config/leftwm/themes/db-nemesis
+
+	rm -rf /tmp/input
+
+	tput setaf 2;
+	echo "#################################################"
+	echo "################  "$name" done"
+	echo "#################################################"
+	tput sgr0;
+done
+
 
 git add --all .
 
