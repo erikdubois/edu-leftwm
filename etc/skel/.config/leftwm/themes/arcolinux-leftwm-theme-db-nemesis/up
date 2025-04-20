@@ -68,10 +68,7 @@ run xfce4-clipman
 
 # Boot picom or compton if it exists
 if [ -x "$(command -v picom)" ]; then
-  #picom --config "$SCRIPTPATH"/picom.conf &> /dev/null &
-  #picom --config $HOME/.config/leftwm/themes/current/picom.conf --experimental-backends &> /dev/null &
-  picom &> /dev/null &
-  #picom --experimental-backends &> /dev/null &
+  picom --config $HOME/.config/leftwm/themes/current/picom.conf
 fi
 
 # Set background
