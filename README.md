@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="kiro.jpg" alt="Kiro" width="220" />
+</p>
+
 # edu-leftwm
 
 Educational / tutorial repository for [LeftWM](https://github.com/leftwm/leftwm), a tiling window manager written in Rust. Part of the `~/EDU/` learning series — minimal scaffolding to drop a working LeftWM config onto a fresh Arch / Kiro install.
