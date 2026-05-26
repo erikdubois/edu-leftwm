@@ -381,9 +381,9 @@ super + y
 # CTRL + ALT KEYS
 #################################################################
 
-#Picom Toggle
+#Compositor Toggle
 ctrl + alt + o
-    ~/.config/leftwm/scripts/picom-toggle.sh
+    ~/.config/leftwm/scripts/fastcompmgr-toggle.sh
 
 #################################################################
 # SUPER + KEYS

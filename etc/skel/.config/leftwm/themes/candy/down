@@ -10,8 +10,7 @@ fi
 leftwm-command "UnloadTheme"
 
 pkill polybar
-pkill compton
-pkill picom
+pkill fastcompmgr
 pkill conky
 pkill dunst
 pkill sxhkd
