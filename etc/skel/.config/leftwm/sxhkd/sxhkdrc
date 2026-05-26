@@ -382,7 +382,7 @@ super + y
 #################################################################
 
 #Compositor Toggle
-ctrl + alt + o
+super + g
     ~/.config/leftwm/scripts/fastcompmgr-toggle.sh
 
 #################################################################
