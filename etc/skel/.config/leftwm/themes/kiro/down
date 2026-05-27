@@ -1,0 +1,17 @@
+#!/bin/bash
+
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+
+#set background
+if [ -x "$(command -v feh)" ]; then
+  feh --bg-scale $SCRIPTPATH/down.jpg
+fi
+
+leftwm-command "UnloadTheme"
+
+pkill polybar
+#while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+pkill fastcompmgr
+pkill dunst
+pkill sxhkd
+pkill volumeicon

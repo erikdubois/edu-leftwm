@@ -19,8 +19,6 @@ blueberry-tray &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 /usr/lib/xfce4/notifyd/xfce4-notifyd &
 volumeicon &
-conky -c ~/.config/leftwm/system-overview &
-#nitrogen --restore &
 #caffeine &
 #vivaldi-stable &
 #firefox &
@@ -29,7 +27,7 @@ conky -c ~/.config/leftwm/system-overview &
 #insync start &
 #discord &
 #spotify &
-#atom &
+#code &
 
 # Boot the compositor if it exists
 if [ -x "$(command -v fastcompmgr)" ]; then
