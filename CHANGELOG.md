@@ -2,6 +2,20 @@
 
 ## 2026.05.27
 
+**What Changed (re-enable mouse drag + window snap in leftwm configs)**
+Synced the live working config decision into the skel tree: `disable_tile_drag` and `disable_window_snap` flipped back to `false` in all three configs, so windows can be dragged/snapped with the mouse again. An earlier sync had set these to `true`; the drag still didn't work across a reboot, so Erik reverted to the `false` (drag-enabled) values and they are now the shipped defaults.
+
+**Technical Details**
+- `config-azerty.ron`, `config-qwerty.ron`, `config.ron`: `disable_tile_drag: true → false`, `disable_window_snap: true → false` (qwerty was already `false` in HEAD; azerty + the qwerty-mirrored `config.ron` were the committed changes).
+- Distro-correct files left untouched per the standing rule: `config.ron` stays a QWERTY mirror of `config-qwerty.ron` (verified identical), `themes/current` stays a relative `→ kiro` symlink.
+- `themes/kiro/theme.toml` deliberately NOT synced — its diff is pure pywal runtime color pollution (col1–col15, bg/fg, border), not a config decision.
+
+**Files Modified**
+- etc/skel/.config/leftwm/config-azerty.ron
+- etc/skel/.config/leftwm/config.ron
+
+---
+
 **What Changed (wallpaper set refresh + full skel sync from working config)**
 Replaced the kiro theme's wallhaven wallpapers with a curated, downscaled `kiro1–5.jpg` set, and brought the whole `etc/skel/.config/leftwm/` tree into line with the live working config. Two machine-specific files were deliberately kept at their distro-correct values rather than mirrored.
 
