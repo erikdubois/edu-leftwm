@@ -93,7 +93,7 @@ super + KP_Enter
 
 #powermenu
 super + shift + x
-    arcolinux-powermenu
+    edu-powermenu
 
 #################################################################
 # SUPER + SHIFT KEYS
@@ -129,10 +129,6 @@ super + shift + s
 # CONTROL + ALT KEYS
 #################################################################
 
-#arcolinux-welcome-app
-ctrl + alt + w
-     arcolinux-welcome-app
-
 #archlinux-tweak-tool
 ctrl + alt + e
     archlinux-tweak-tool
@@ -144,6 +140,14 @@ ctrl + alt + Next
 #conky-rotate
 ctrl + alt + Prior
     conky-rotate -p
+
+#btop
+ctrl + alt + End
+    alacritty -e btop
+
+#btop
+ctrl + alt + n
+    alacritty -e btop
 
 #File-Manager
 ctrl + alt + b
@@ -296,7 +300,7 @@ ctrl + shift + Escape
 
 #Scrot
 Print
-    scrot 'ArcoLinux-%Y-%m-%d-%s_screenshot_$wx$h.jpg' -e 'mv $f $$(xdg-user-dir PICTURES)'
+    scrot 'Kiro-%Y-%m-%d-%s_screenshot_$wx$h.jpg' -e 'mv $f $$(xdg-user-dir PICTURES)'
 
 #screenshooter
 ctrl + Print

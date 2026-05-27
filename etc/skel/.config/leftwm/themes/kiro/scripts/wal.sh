@@ -14,12 +14,21 @@ if [ -x "$(command -v wal)" ]; then
     my_array=($HOME/.config/leftwm/themes/current/backgrounds/*)
         ####my_array=(/usr/share/backgrounds/*)
 
-     wal -i ${my_array[$(( $RANDOM % ${#my_array[@]}))]} -a 80
+    # First login shows the Kiro default wallpaper so every fresh install opens
+    # on the same branded image; afterwards rotate randomly through the set.
+    first_run_marker="$HOME/.cache/kiro-first-wallpaper-done"
+    default_wallpaper="$HOME/.config/leftwm/themes/kiro/backgrounds/wallhaven-1ko2rv.png"
+    if [ ! -f "$first_run_marker" ] && [ -f "$default_wallpaper" ]; then
+      wallpaper="$default_wallpaper"
+      touch "$first_run_marker"
+    else
+      wallpaper="${my_array[$(( RANDOM % ${#my_array[@]} ))]}"
+    fi
+    wal -i "$wallpaper" -a 80
     cat ~/.cache/wal/color.leftwm-theme.toml &&
     ####bat ~/.cache/wal/color.leftwm-theme.ron &&               
     cp -f ~/.cache/wal/color.leftwm-theme.toml $HOME/.config/leftwm/themes/current/theme.toml &&
     
-    leftwm command "LoadTheme $HOME/.config/leftwm/themes/current/theme.ron"
     leftwm command "LoadTheme $HOME/.config/leftwm/themes/current/theme.toml"
 
 else

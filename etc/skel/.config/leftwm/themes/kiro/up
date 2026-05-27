@@ -3,16 +3,17 @@ export SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 #this is your scriptpath
 # echo $SCRIPTPATH
 
+# Pywal toggle: true = regenerate colors from the wallpaper each login (dynamic,
+# but the source of the unstable/red border); false = use the static theme.toml
+# (fixed Kiro colors), exactly like the candy theme that works reliably.
+use_pywal=false
+
 # Down the last running theme
 if [ -f "/tmp/leftwm-theme-down" ]; then
     /tmp/leftwm-theme-down
     rm /tmp/leftwm-theme-down
 fi
 ln -s $SCRIPTPATH/down /tmp/leftwm-theme-down
-
-########## This script makes the colors of your polybar and terminals#########
-sh $SCRIPTPATH/scripts/wal.sh
-##############################################################################
 
 #change your keyboard if you need it - azerty or qwerty
 #setxkbmap -layout be
@@ -22,16 +23,22 @@ if [ $keybLayout = "be" ]; then
   cp ~/.config/leftwm/config-azerty.ron ~/.config/leftwm/config.ron
 fi
 
-#keep toml until wal project makes the file
-#leftwm command "LoadTheme $SCRIPTPATH/theme.ron"
-leftwm command "LoadTheme $SCRIPTPATH/theme.toml"
-
-function run {
-  if ! pgrep -x $(basename $1 | head -c 15) 1>/dev/null;
-  then
-    $@&
+########## Colors: pywal (dynamic) or static theme.toml #######################
+if [ "$use_pywal" = true ]; then
+  sh $SCRIPTPATH/scripts/wal.sh
+else
+  # Static theme — theme.toml is already loaded above; just set the wallpaper.
+  if [ -x "$(command -v feh)" ]; then
+    feh --bg-fill "$SCRIPTPATH/backgrounds/wallhaven-1ko2rv.png"
   fi
-}
+fi
+##############################################################################
+
+# leftwm 0.5.4 reliably applies borders from a clean theme.ron (only valid
+# fields); theme.toml carried pywal's col*/background/foreground extras that
+# break parsing and leave the border at leftwm's default red.
+leftwm command "LoadTheme $SCRIPTPATH/theme.ron"
+
 
 # diversity of apps to start
 fastcompmgr &
