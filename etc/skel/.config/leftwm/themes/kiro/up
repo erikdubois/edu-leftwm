@@ -6,7 +6,7 @@ export SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 # Pywal toggle: true = regenerate colors from the wallpaper each login (dynamic,
 # but the source of the unstable/red border); false = use the static theme.toml
 # (fixed Kiro colors), exactly like the candy theme that works reliably.
-use_pywal=false
+use_pywal=true
 
 # Down the last running theme
 if [ -f "/tmp/leftwm-theme-down" ]; then
@@ -14,6 +14,10 @@ if [ -f "/tmp/leftwm-theme-down" ]; then
     rm /tmp/leftwm-theme-down
 fi
 ln -s $SCRIPTPATH/down /tmp/leftwm-theme-down
+
+# Monitor layout — detect connected screens and arrange them left-to-right.
+# Must run before the polybar loop so bars get the correct geometry.
+~/.config/leftwm/scripts/monitor-layout.sh
 
 #change your keyboard if you need it - azerty or qwerty
 #setxkbmap -layout be
@@ -40,6 +44,10 @@ fi
 leftwm command "LoadTheme $SCRIPTPATH/theme.ron"
 
 
+# keybindings daemon
+killall sxhkd 2>/dev/null
+sxhkd -c ~/.config/leftwm/sxhkd/sxhkdrc &
+
 # diversity of apps to start
 fastcompmgr &
 nm-applet &
@@ -63,11 +71,21 @@ run xfce4-clipman
 
 #mainbar
 index=0
-monitors=($(polybar -m | sed s/:.*//))
+# Map each connected monitor to its x-offset (from `polybar -m`) so every bar
+# lands on the screen whose workspace it controls: mainbarN drives leftwm
+# workspace N, so we place it on the monitor at workspace N's x position.
+# Pairing by raw `polybar -m` order breaks when leftwm's workspace order and
+# polybar's monitor order disagree (e.g. after a primary-monitor swap).
+declare -A monitor_at_x
+while IFS= read -r mline; do
+  mname="${mline%%:*}"; mgeom="${mline#*: }"; mgeom="${mgeom%% *}"
+  mx="${mgeom#*+}"; mx="${mx%%+*}"
+  monitor_at_x[$mx]="$mname"
+done < <(polybar -m)
 leftwm-state -q -n -t "$SCRIPTPATH"/sizes.liquid | sed -r '/^\s*$/d' | while read -r width x y
 do
   barname="mainbar$index"
-  monitor=${monitors[index]} width=$(( width - 16 )) polybar -c "$SCRIPTPATH"/polybar/polybartop.config $barname &> /dev/null &
-  monitor=${monitors[index]} width=$(( width - 16 )) polybar -c "$SCRIPTPATH"/polybar/polybarbottom.config $barname &> /dev/null &
+  monitor=${monitor_at_x[$x]} width=$(( width - 16 )) polybar -c "$SCRIPTPATH"/polybar/polybartop.config $barname &> /dev/null &
+  monitor=${monitor_at_x[$x]} width=$(( width - 16 )) polybar -c "$SCRIPTPATH"/polybar/polybarbottom.config $barname &> /dev/null &
   let index=index+1
 done

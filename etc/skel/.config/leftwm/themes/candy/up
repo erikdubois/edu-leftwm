@@ -8,17 +8,26 @@ if [ -f "/tmp/leftwm-theme-down" ]; then
 fi
 ln -s $SCRIPTPATH/down /tmp/leftwm-theme-down
 
+# Monitor layout — detect connected screens and arrange them left-to-right.
+# Must run before the polybar loop so bars get the correct geometry.
+~/.config/leftwm/scripts/monitor-layout.sh
+
 # keybindings daemon
+killall sxhkd 2>/dev/null
 sxhkd -c ~/.config/leftwm/sxhkd/sxhkdrc &
 
 # diversity of apps to start
+fastcompmgr &
 nm-applet &
+pamac-tray &
 xfce4-power-manager &
 numlockx on &
 blueberry-tray &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 /usr/lib/xfce4/notifyd/xfce4-notifyd &
 volumeicon &
+run xfce4-clipman
+
 #caffeine &
 #vivaldi-stable &
 #firefox &
@@ -28,11 +37,6 @@ volumeicon &
 #discord &
 #spotify &
 #code &
-
-# Boot the compositor if it exists
-if [ -x "$(command -v fastcompmgr)" ]; then
-  fastcompmgr -c &> /dev/null &
-fi
 
 # Set the theme.ron config
 leftwm command "LoadTheme $SCRIPTPATH/theme.ron"
@@ -44,10 +48,20 @@ fi
 
 #mainbar
 index=0
-monitors=($(polybar -m | sed s/:.*//))
+# Map each connected monitor to its x-offset (from `polybar -m`) so every bar
+# lands on the screen whose workspace it controls: mainbarN drives leftwm
+# workspace N, so we place it on the monitor at workspace N's x position.
+# Pairing by raw `polybar -m` order breaks when leftwm's workspace order and
+# polybar's monitor order disagree (e.g. after a primary-monitor swap).
+declare -A monitor_at_x
+while IFS= read -r mline; do
+  mname="${mline%%:*}"; mgeom="${mline#*: }"; mgeom="${mgeom%% *}"
+  mx="${mgeom#*+}"; mx="${mx%%+*}"
+  monitor_at_x[$mx]="$mname"
+done < <(polybar -m)
 leftwm-state -q -n -t "$SCRIPTPATH"/sizes.liquid | sed -r '/^\s*$/d' | while read -r width x y
 do
   barname="mainbar$index"
-  monitor=${monitors[index]} width=$(( width - 16 )) polybar -c "$SCRIPTPATH"/polybar/config.ini $barname &> /dev/null &
+  monitor=${monitor_at_x[$x]} width=$(( width - 16 )) polybar -c "$SCRIPTPATH"/polybar/config.ini $barname &> /dev/null &
   let index=index+1
 done
