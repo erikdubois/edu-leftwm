@@ -4,12 +4,40 @@
 
 # edu-leftwm
 
-Educational / tutorial repository for [LeftWM](https://github.com/leftwm/leftwm), a tiling window manager written in Rust. Part of the `~/EDU/` learning series — minimal scaffolding to drop a working LeftWM config onto a fresh Arch / Kiro install.
+A ready-to-run [LeftWM](https://github.com/leftwm/leftwm) setup for Arch / Kiro — the tiling window manager written in Rust, pre-configured with a polybar bar, keybindings, a rofi launcher and a theme so it works the moment you log in. Part of the `~/EDU/` learning series.
 
-## What's in this repo
+LeftWM keeps its configuration as plain text under `~/.config/leftwm/`, so everything here is yours to read and change.
 
-- `etc/skel/` — LeftWM user config files dropped into new accounts' home directories (themes, `config.ron`, autostart hooks). _Currently empty — see [TODO.md](./TODO.md); contributions welcome._
-- `setup.sh`, `up.sh`, `cleanup.sh`, `1-cleanup.sh` — standard EDU bash scaffold (modelled on the canonical Kiro-HQ templates).
+## What this repo ships
+
+Everything lands in `etc/skel/`, so a fresh user account gets a complete LeftWM desktop:
+
+- **`.config/leftwm/config.ron`** — the main config: Super as the mod key, 9 tags, sloppy focus, and the keybindings below. Also shipped as `config-qwerty.ron` (the default) and `config-azerty.ron` (BE-azerty tag-number keys); switch with `.bin/give-me-azerty-be-leftwm`.
+- **candy theme** (`.config/leftwm/themes/candy`, the active theme) — a polybar bar (clock, CPU, memory, kernel, system tray), feh wallpaper, the `fastcompmgr` compositor, and a conky system overview.
+- **`.config/leftwm/sxhkd/sxhkdrc`** — extra keybindings handled by sxhkd: function-key app launchers, volume / brightness / media keys, screenshots, and wallpaper control.
+- **rofi launcher** (`.config/leftwm/launcher/`) — the application menu.
+- **`.config/leftwm/themes.toml`** + **`scripts/`** — a registry of LeftWM community and ArcoLinux themes, with helper scripts to install and test them.
+- **`.config/leftwm/cheatsheet.md`** — the keybinding reference.
+
+## Key bindings
+
+| Keys | Action |
+|------|--------|
+| Super + Return / Super + t | terminal (alacritty) |
+| Super + d | application launcher (rofi) |
+| Super + Shift + d | dmenu |
+| Super + Shift + Return | file manager (thunar) |
+| Super + q | close focused window |
+| Super + Space | next layout |
+| Super + 1..9 | go to tag |
+| Super + Shift + 1..9 | move window to tag |
+| Super + f | toggle fullscreen |
+| Super + Shift + r | reload the config |
+| Super + g | toggle the compositor |
+| Super + x | logout menu (archlinux-logout) |
+| Ctrl + Alt + e | archlinux-tweak-tool |
+
+Full list: [`cheatsheet.md`](etc/skel/.config/leftwm/cheatsheet.md) and the `sxhkdrc`.
 
 ## Installation
 
@@ -23,36 +51,40 @@ SigLevel = Never
 Server = https://erikdubois.github.io/$repo/$arch
 ```
 
-Then install:
+Then install LeftWM and this config:
 
 ```bash
 sudo pacman -Syu
-sudo pacman -S edu-leftwm-git
+sudo pacman -S edu-leftwm-git leftwm
 ```
 
-This drops the `etc/skel/` content into `/etc/skel/`. New users created after installation inherit the LeftWM config automatically; existing users can copy the files manually:
+The package drops its files into `/etc/skel/`. New user accounts created afterwards inherit the config automatically; an existing user can pull it in with:
 
 ```bash
 cp -rT /etc/skel ~/
 ```
 
+Log out and pick **LeftWM** from your display manager's session list.
+
 ### Manual
 
 ```bash
+sudo pacman -S leftwm
 git clone https://github.com/erikdubois/edu-leftwm.git
 cd edu-leftwm
+# system-wide, for new accounts:
 sudo cp -r etc/skel/. /etc/skel/
+# or straight into your own home:
+cp -r etc/skel/. ~/
 ```
 
-You also need LeftWM itself:
+### Runtime dependencies
 
-```bash
-sudo pacman -S leftwm
-```
+The config calls common Arch / Kiro tools — install whatever you are missing: `polybar`, `sxhkd`, `rofi`, `feh`, `fastcompmgr`, `conky`, `dmenu`, `alacritty`, `thunar`, `archlinux-logout`, `variety`. On Kiro these are already present.
 
 ## Websites
 
-Information : https://erikdubois.be
+Information : https://kiroproject.be
 
 ## Social Media
 
