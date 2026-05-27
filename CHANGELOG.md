@@ -2,6 +2,24 @@
 
 ## 2026.05.27
 
+**What Changed (wallpaper set refresh + full skel sync from working config)**
+Replaced the kiro theme's wallhaven wallpapers with a curated, downscaled `kiro1–5.jpg` set, and brought the whole `etc/skel/.config/leftwm/` tree into line with the live working config. Two machine-specific files were deliberately kept at their distro-correct values rather than mirrored.
+
+**Technical Details**
+- **Wallpapers:** `themes/kiro/backgrounds/` now ships `kiro1.jpg`–`kiro5.jpg` (72 KB–523 KB); removed `wallhaven-1ko2rv.png`, `-6k23rw.jpg`, `-9568vx.jpg`, `-9mr8r1.jpg`, `-rdjojm.jpg`.
+- **Kept distro-correct (not mirrored from the working box):** `themes/current` stays a **relative** `→ kiro` symlink (the live one is an absolute `/home/erik/...` path that would break on any other machine); `config.ron` stays **QWERTY** (refreshed from `config-qwerty.ron`) — azerty is applied at runtime by `up` only for `be` keyboards.
+- **Synced content changes:** `config-{azerty,qwerty}.ron` `disable_tile_drag: false → true`; `themes.toml` added (leftwm-theme community registry); plus the candy `down` script and assorted theme files brought up to date.
+- **First-login default repointed:** `themes/kiro/up:36` and `themes/kiro/scripts/wal.sh:20` now reference `kiro1.jpg` (was the removed `wallhaven-1ko2rv.png`), so a fresh install opens on a fixed Kiro wallpaper again; later logins still rotate randomly with pywal colors.
+
+**Files Modified**
+- etc/skel/.config/leftwm/themes/kiro/backgrounds/ (kiro1–5.jpg added; 5 wallhaven-* removed)
+- etc/skel/.config/leftwm/config.ron, config-azerty.ron, config-qwerty.ron
+- etc/skel/.config/leftwm/themes.toml (new)
+- etc/skel/.config/leftwm/themes/candy/down
+- etc/skel/.config/leftwm/themes/kiro/up, themes/kiro/scripts/wal.sh (default wallpaper → kiro1.jpg)
+
+---
+
 **What Changed (multi-monitor polybar placement + monitor-layout script)**
 Made polybar reliably land each bar on the correct screen on multi-monitor setups, and added a `monitor-layout.sh` that arranges connected outputs left-to-right at login. The old logic paired bars to monitors by raw `polybar -m` order, which lands bars on the wrong screen when leftwm's workspace order and polybar's monitor order disagree (e.g. after a primary-monitor swap). On a single screen the new logic degrades to the trivial `x=0 → only monitor` case, so single-monitor boxes are unaffected.
 

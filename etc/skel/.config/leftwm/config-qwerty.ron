@@ -31,7 +31,7 @@
     ( window_class: "xfce4-notifyd", spawn_floating: true ),
     ],
     disable_current_tag_swap: true,
-    disable_tile_drag: false,
+    disable_tile_drag: true,
     disable_window_snap: true,
     focus_behaviour: Sloppy,
     focus_new_windows: true,

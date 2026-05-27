@@ -17,7 +17,7 @@ if [ -x "$(command -v wal)" ]; then
     # First login shows the Kiro default wallpaper so every fresh install opens
     # on the same branded image; afterwards rotate randomly through the set.
     first_run_marker="$HOME/.cache/kiro-first-wallpaper-done"
-    default_wallpaper="$HOME/.config/leftwm/themes/kiro/backgrounds/wallhaven-1ko2rv.png"
+    default_wallpaper="$HOME/.config/leftwm/themes/kiro/backgrounds/kiro1.jpg"
     if [ ! -f "$first_run_marker" ] && [ -f "$default_wallpaper" ]; then
       wallpaper="$default_wallpaper"
       touch "$first_run_marker"

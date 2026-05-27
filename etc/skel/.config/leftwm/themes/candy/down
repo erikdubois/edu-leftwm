@@ -12,5 +12,4 @@ leftwm-command "UnloadTheme"
 pkill polybar
 pkill fastcompmgr
 pkill dunst
-pkill sxhkd
 pkill volumeicon

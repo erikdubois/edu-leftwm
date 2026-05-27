@@ -33,7 +33,7 @@ if [ "$use_pywal" = true ]; then
 else
   # Static theme — theme.toml is already loaded above; just set the wallpaper.
   if [ -x "$(command -v feh)" ]; then
-    feh --bg-fill "$SCRIPTPATH/backgrounds/wallhaven-1ko2rv.png"
+    feh --bg-fill "$SCRIPTPATH/backgrounds/kiro1.jpg"
   fi
 fi
 ##############################################################################
